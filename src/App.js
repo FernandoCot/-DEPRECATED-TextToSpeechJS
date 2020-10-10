@@ -4,7 +4,9 @@ import React, { useState } from 'react';
 // MUI
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
+import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 // Icons
 import ProceedIcon from '@material-ui/icons/Forward';
@@ -13,10 +15,12 @@ import ProceedIcon from '@material-ui/icons/Forward';
 import axios from 'axios';
 
 const App = () => {
+  const [isLoading, setLoading] = useState(false);
   const [textToBeTranslated, setTextToBeTranslated] = useState('');
 
   const turnTextIntoAudio = () => {
     if (textToBeTranslated) {
+      setLoading(true);
       let data = {
         audioConfig: {
           pitch: 0,
@@ -37,6 +41,7 @@ const App = () => {
         .catch((error) => {
           alert(error);
         })
+        .finally(() => setLoading(false))
     } else {
       alert('O texto é obrigatório!');
     }
@@ -49,22 +54,36 @@ const App = () => {
       direction="column"
       alignItems="center"
     >
-      <Grid item md={4}>
+      <Typography style={{ margin: '20px auto' }}>
+        (Google) Text to Speech Studies
+      </Typography>
+      <Grid
+        container
+        item
+        md={3}
+        justify="center"
+      >
         <TextField
+          multiline
+          variant="outlined"
+          disabled={isLoading}
           label="Digite o texto:"
           value={textToBeTranslated}
+          InputLabelProps={{ shrink: true }}
           onChange={(e) => setTextToBeTranslated(e.target.value)}
-          InputLabelProps={{
-            shrink: true,
-          }}
-          variant="outlined"
         />
-        <IconButton
-          color="primary"
-          onClick={() => turnTextIntoAudio()}
-        >
-          <ProceedIcon />
-        </IconButton>
+        {!isLoading && (
+          <IconButton
+            color="primary"
+            disabled={isLoading}
+            onClick={() => turnTextIntoAudio()}
+          >
+            <ProceedIcon />
+          </IconButton>
+        )}
+        {isLoading && (
+          <CircularProgress color="primary" />
+        )}
       </Grid>
     </Grid>
   );
