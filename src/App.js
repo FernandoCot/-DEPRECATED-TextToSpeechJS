@@ -62,6 +62,7 @@ const App = () => {
         item
         md={3}
         justify="center"
+        alignItems="center"
       >
         <TextField
           multiline
@@ -69,6 +70,7 @@ const App = () => {
           disabled={isLoading}
           label="Digite o texto:"
           value={textToBeTranslated}
+          style={{ marginRight: 15 }}
           InputLabelProps={{ shrink: true }}
           onChange={(e) => setTextToBeTranslated(e.target.value)}
         />
