@@ -13,14 +13,19 @@ import ProceedIcon from '@material-ui/icons/Forward';
 
 // Others
 import axios from 'axios';
+import testAudio from '../src/audioTest.mp3';
+import AudioPlayer from 'material-ui-audio-player';
 
 const App = () => {
   const [isLoading, setLoading] = useState(false);
+  const [formattedAudio, setFormattedAudio] = useState(testAudio);
   const [textToBeTranslated, setTextToBeTranslated] = useState('');
 
   const turnTextIntoAudio = () => {
     if (textToBeTranslated) {
+      console.log(process.env.GOOGLE_APPLICATION_CREDENTIALS)
       setLoading(true);
+      setFormattedAudio(null);
       let data = {
         audioConfig: {
           pitch: 0,
@@ -34,9 +39,10 @@ const App = () => {
         }
       }
 
-      axios.post('https://texttospeech.googleapis.com/v1/text:synthesize', data, {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': `*`})
+      axios.post('https://texttospeech.googleapis.com/v1/text:synthesize', data, {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'})
         .then((response) => {
           console.log(response);
+          // setFormattedAudio(response);
         })
         .catch((error) => {
           alert(error);
@@ -63,6 +69,7 @@ const App = () => {
         md={3}
         justify="center"
         alignItems="center"
+        style={{ marginBottom: 30 }}
       >
         <TextField
           multiline
@@ -87,6 +94,23 @@ const App = () => {
           <CircularProgress color="primary" />
         )}
       </Grid>
+      {formattedAudio && (
+        <Grid
+          container
+          item
+          md={3}
+          justify="center"
+          alignItems="center"
+        >
+          <AudioPlayer
+            elevation={1}
+            width="400px"
+            download={true}
+            variation="primary"
+            src={formattedAudio}
+          />
+        </Grid>
+      )}
     </Grid>
   );
 }
