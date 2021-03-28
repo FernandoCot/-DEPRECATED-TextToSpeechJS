@@ -61,7 +61,7 @@ const App = () => {
       alignItems="center"
     >
       <Typography style={{ margin: '20px auto' }}>
-        (Google) Text to Speech Studies
+        Text-To-Speech Studies in JS
       </Typography>
       <Grid
         container

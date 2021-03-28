@@ -1,1 +1,1 @@
-(Google) Text To Speech Studies - by Fernando Calixto 2020
+Text-To-Speech Studies in Javascript - by Fernando Calixto 2020
